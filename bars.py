@@ -63,8 +63,8 @@ def get_closest_bar(data):
     closest_bar = None
 
     # Point one
-    lon1 = longitude = float(input("Please enter longitude: "))
-    lat1 = float(input("Please enter longitude: "))
+    lon1 = longitude = float(input("Введите широту"))
+    lat1 = float(input("Введите долготу"))
     
 
     for bar in data:
