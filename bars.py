@@ -1,78 +1,71 @@
 import json
-import math
-
-def pretty_print(data):
-    print(json.dumps(data, indent=4, ensure_ascii=False))
-
 
 def load_data(filepath):
     with open(filepath, 'r') as file_handler:
         return json.load(file_handler)
 
-data = load_data('bars.json')
+json_encoded = load_data('bars.json')
+bars_lst = json_encoded['features']
 
-array = data['features']
+def get_biggest_bar(bars):
+    seats_counts = []
+    max_bar = 0
 
-
-
-def get_biggest_bar(data):
-    max_value = None #set to none so that there is no default value
-    max_bar = None
-
-    for bar in data:
-        seats_count = int(bar['properties']['Attributes']['SeatsCount'])
-
-        if max_value is None or seats_count > max_value: # is None instead of == None (second will return True if not empty)
-            max_value = seats_count
-
-        if seats_count >= max_value:
+    for bar in bars:
+        seats_counts.append(bar['properties']['Attributes']['SeatsCount'])
+    max_seats = max(seats_counts)
+    for bar in bars:
+        if bar['properties']['Attributes']['SeatsCount'] == max_seats:
             max_bar = bar
-    
-    bar_info = 'Самый большой бар: ' + max_bar['properties']['Attributes']['Name'] + ', ' + str(max_bar['properties']['Attributes']['SeatsCount'])
+    max_bar_info = ('Самый большой бар: ' +
+                    max_bar['properties']['Attributes']['Name'] +
+                    ', ' +
+                    str(max_bar['properties']['Attributes']['SeatsCount']) +
+                    ', ' +
+                    max_bar['properties']['Attributes']['Address'])
+    return max_bar_info
 
-    return bar_info
-
-print (get_biggest_bar(array))
+print(get_biggest_bar(bars_lst))
 
 
-def get_smallest_bar(data):
-    min_value = None #set to none so that there is no default value
-    min_bar = None
+def get_smallest_bar(bars):
+    seats_counts = []
+    min_bar = 0
 
-    for bar in data:
-        seats_count = int(bar['properties']['Attributes']['SeatsCount'])
-
-        if min_value is None or seats_count < min_value: # is None instead of == None (second will return True if not empty)
-            min_value = seats_count
-
-        if seats_count <= min_value:
+    for bar in bars:
+        seats_count = bar['properties']['Attributes']['SeatsCount']
+        if seats_count > 0: # a 0 seats bar makes no sense
+            seats_counts.append(seats_count)
+    min_seats = min(seats_counts)
+    for bar in bars:
+        if bar['properties']['Attributes']['SeatsCount'] == min_seats:
             min_bar = bar
-    
-    bar_info = 'Самый маленький бар: ' + min_bar['properties']['Attributes']['Name'] + ', ' + str(min_bar['properties']['Attributes']['SeatsCount'])
+    min_bar_info = ('Самый маленький бар: ' +
+                    min_bar['properties']['Attributes']['Name'] +
+                    ', ' +
+                    str(min_bar['properties']['Attributes']['SeatsCount']) +
+                    ', ' +
+                    min_bar['properties']['Attributes']['Address'])
+    return min_bar_info
 
-    return bar_info
-
-print (get_smallest_bar(array))
+print(get_smallest_bar(bars_lst))
 
 
-
-
-def get_closest_bar(data):
+def get_closest_bar(bars):
 
     min_dist = None
     closest_bar = None
 
     # Point one
-    lon1 = longitude = float(input("Введите широту"))
-    lat1 = float(input("Введите долготу"))
-    
+    lon1 = longitude = float(input('Введите широту: '))
+    lat1 = float(input('Введите долготу: '))
 
-    for bar in data:
+    for bar in bars:
         # Point two
         lon2 = float(bar['geometry']['coordinates'][0])
         lat2 = float(bar['geometry']['coordinates'][1])
-
-        dist = math.sqrt((lat2 - lat1)**2 + (lon2 - lon1)**2)
+        # comparing hypotenuse**2 since it doesn't change relative dist
+        dist = (lat2 - lat1)**2 + (lon2 - lon1)**2
 
         if min_dist is None or dist < min_dist:
             min_dist = dist
@@ -80,11 +73,11 @@ def get_closest_bar(data):
         if dist <= min_dist:
             closest_bar = bar
 
-        bar_info = 'Самый близкий бар: ' + closest_bar['properties']['Attributes']['Name']
+        bar_info = ('Самый близкий бар: ' +
+                    closest_bar['properties']['Attributes']['Name'] +
+                    ', ' +
+                    closest_bar['properties']['Attributes']['Address'])
 
     return bar_info
 
-
-
-print(get_closest_bar(array))
-
+print(get_closest_bar(bars_lst))
