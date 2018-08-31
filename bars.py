@@ -1,11 +1,14 @@
 import json
 
+
 def load_data(filepath):
     with open(filepath, 'r') as file_handler:
         return json.load(file_handler)
 
+
 json_encoded = load_data('bars.json')
 bars_lst = json_encoded['features']
+
 
 def get_biggest_bar(bars):
     seats_counts = []
@@ -25,6 +28,7 @@ def get_biggest_bar(bars):
                     max_bar['properties']['Attributes']['Address'])
     return max_bar_info
 
+
 print(get_biggest_bar(bars_lst))
 
 
@@ -34,7 +38,7 @@ def get_smallest_bar(bars):
 
     for bar in bars:
         seats_count = bar['properties']['Attributes']['SeatsCount']
-        if seats_count > 0: # a 0 seats bar makes no sense
+        if seats_count > 0:  # a 0 seats bar makes no sense
             seats_counts.append(seats_count)
     min_seats = min(seats_counts)
     for bar in bars:
@@ -47,6 +51,7 @@ def get_smallest_bar(bars):
                     ', ' +
                     min_bar['properties']['Attributes']['Address'])
     return min_bar_info
+
 
 print(get_smallest_bar(bars_lst))
 
@@ -79,5 +84,6 @@ def get_closest_bar(bars):
                     closest_bar['properties']['Attributes']['Address'])
 
     return bar_info
+
 
 print(get_closest_bar(bars_lst))
