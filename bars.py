@@ -20,16 +20,10 @@ def get_biggest_bar(bars):
     for bar in bars:
         if bar['properties']['Attributes']['SeatsCount'] == max_seats:
             max_bar = bar
-    max_bar_info = ('Самый большой бар: ' +
-                    max_bar['properties']['Attributes']['Name'] +
-                    ', ' +
-                    str(max_bar['properties']['Attributes']['SeatsCount']) +
-                    ', ' +
-                    max_bar['properties']['Attributes']['Address'])
-    return max_bar_info
+    return max_bar
 
 
-print(get_biggest_bar(bars_lst))
+
 
 
 def get_smallest_bar(bars):
@@ -38,52 +32,41 @@ def get_smallest_bar(bars):
 
     for bar in bars:
         seats_count = bar['properties']['Attributes']['SeatsCount']
-        if seats_count > 0:  # a 0 seats bar makes no sense
+        if seats_count > 0:
             seats_counts.append(seats_count)
     min_seats = min(seats_counts)
     for bar in bars:
         if bar['properties']['Attributes']['SeatsCount'] == min_seats:
             min_bar = bar
-    min_bar_info = ('Самый маленький бар: ' +
-                    min_bar['properties']['Attributes']['Name'] +
-                    ', ' +
-                    str(min_bar['properties']['Attributes']['SeatsCount']) +
-                    ', ' +
-                    min_bar['properties']['Attributes']['Address'])
-    return min_bar_info
-
-
-print(get_smallest_bar(bars_lst))
+    return min_bar
 
 
 def get_closest_bar(bars):
 
-    min_dist = None
+    min_square_dist = None
     closest_bar = None
 
-    # Point one
-    lon1 = longitude = float(input('Введите широту: '))
-    lat1 = float(input('Введите долготу: '))
+    lon_current = longitude = float(input('Input longitude: '))
+    lat_current = float(input('Input latitude: '))
 
     for bar in bars:
-        # Point two
-        lon2 = float(bar['geometry']['coordinates'][0])
-        lat2 = float(bar['geometry']['coordinates'][1])
-        # comparing hypotenuse**2 since it doesn't change relative dist
-        dist = (lat2 - lat1)**2 + (lon2 - lon1)**2
+        lon_bar = float(bar['geometry']['coordinates'][0])
+        lat_bar = float(bar['geometry']['coordinates'][1])
 
-        if min_dist is None or dist < min_dist:
-            min_dist = dist
+        square_dist = (lat_bar - lat_current)**2 + (lon_bar - lon_current)**2
 
-        if dist <= min_dist:
+        if min_square_dist is None or square_dist < min_square_dist:
+            min_square_dist = square_dist
+
+        if square_dist <= min_square_dist:
             closest_bar = bar
 
-        bar_info = ('Самый близкий бар: ' +
-                    closest_bar['properties']['Attributes']['Name'] +
-                    ', ' +
-                    closest_bar['properties']['Attributes']['Address'])
+    return closest_bar
 
-    return bar_info
-
-
-print(get_closest_bar(bars_lst))
+if __name__ == '__main__':
+    print ('Biggest bar')
+    print(get_biggest_bar(bars_lst))
+    print('Smallest bar')
+    print(get_smallest_bar(bars_lst))
+    print('Closest_bar')
+    print(get_closest_bar(bars_lst))
