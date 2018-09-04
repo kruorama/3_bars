@@ -68,5 +68,5 @@ if __name__ == '__main__':
     print(get_biggest_bar(bars_lst))
     print('Smallest bar')
     print(get_smallest_bar(bars_lst))
-    print('Closest_bar')
+    print('closest_bar')
     print(get_closest_bar(bars_lst))
