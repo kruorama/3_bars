@@ -1,47 +1,35 @@
 import json
+import sys
 
 
-def load_data(filepath):
+def read_bars_lst(filepath):
     with open(filepath, 'r') as file_handler:
-        return json.load(file_handler)
+        bars_json = json.load(file_handler)
+        return bars_json
 
 
-json_encoded = load_data('bars.json')
-bars_lst = json_encoded['features']
+def get_bars_lst(bars_json):
+    bars = bars_json['features']
+    return bars
 
 
 def get_biggest_bar(bars):
-    seats_counts = []
-    max_bar = 0
-
-    for bar in bars:
-        seats_counts.append(bar['properties']['Attributes']['SeatsCount'])
-    max_seats = max(seats_counts)
-    for bar in bars:
-        if bar['properties']['Attributes']['SeatsCount'] == max_seats:
-            max_bar = bar
+    max_bar = max(
+        bars,
+        key=lambda x: x['properties']['Attributes']['SeatsCount'])
     return max_bar
 
 
-
-
-
 def get_smallest_bar(bars):
-    seats_counts = []
-    min_bar = 0
-
-    for bar in bars:
-        seats_count = bar['properties']['Attributes']['SeatsCount']
-        if seats_count > 0:
-            seats_counts.append(seats_count)
-    min_seats = min(seats_counts)
-    for bar in bars:
-        if bar['properties']['Attributes']['SeatsCount'] == min_seats:
-            min_bar = bar
+    min_bar = min(
+        bars,
+        key=lambda x: x['properties']['Attributes']['SeatsCount'])
     return min_bar
 
 
 def get_closest_bar(bars):
+
+    # I don't know how to use min here without appending distance to the JSON
 
     min_square_dist = None
     closest_bar = None
@@ -63,10 +51,17 @@ def get_closest_bar(bars):
 
     return closest_bar
 
+
 if __name__ == '__main__':
-    print ('Biggest bar')
-    print(get_biggest_bar(bars_lst))
+    if len(sys.argv) <= 1:
+        exit('Please add a path to bars list')
+
+    bars_json = read_bars_lst(sys.argv[1])
+    bars = get_bars_lst(bars_json)
+
+    print('Biggest bar')
+    print(get_biggest_bar(bars))
     print('Smallest bar')
-    print(get_smallest_bar(bars_lst))
+    print(get_smallest_bar(bars))
     print('closest_bar')
-    print(get_closest_bar(bars_lst))
+    print(get_closest_bar(bars))
