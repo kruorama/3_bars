@@ -31,6 +31,29 @@ def get_smallest_bar(bars_lst):
         key=lambda x: x['properties']['Attributes']['SeatsCount'])
     return min_bar
 
+def get_current_coordinates():
+    while True:
+        try:
+            lat_current = float(input('Input latitude: '))
+            if -90 < lat_current < 90:
+                break
+            else:
+                print("Latitude should be between -90 and 90. Try again...")
+        except ValueError:
+            print("That was not a valid number.  Try again...")
+
+    while True:
+        try:
+            lon_current = float(input('Input longitude: '))
+            if -180 < lon_current < 180:
+                break
+            else:
+                print("Longitude should be between -180 and 180. Try again...")
+        except ValueError:
+            print("That was not a valid number.  Try again...")
+
+    return lat_current, lon_current
+
 
 def get_square_distance(lon_current, lat_current, bar):
     lon_bar = bar['geometry']['coordinates'][0]
@@ -40,6 +63,7 @@ def get_square_distance(lon_current, lat_current, bar):
 
 
 def get_closest_bar(bars_lst):
+    lat_current, lon_current = get_current_coordinates()
     closest_bar = min(
         bars_lst,
         key=lambda x: get_square_distance(lon_current, lat_current, x))
@@ -68,26 +92,6 @@ if __name__ == '__main__':
         except KeyError:
             print("That doesn't seem like correct bars.json")
             exit()
-
-    while True:
-        try:
-            lat_current = float(input('Input latitude: '))
-            if -90 < lat_current < 90:
-                break
-            else:
-                print("Latitude should be between -90 and 90. Try again...")
-        except ValueError:
-            print("That was not a valid number.  Try again...")
-
-    while True:
-        try:
-            lon_current = float(input('Input longitude: '))
-            if -180 < lon_current < 180:
-                break
-            else:
-                print("Longitude should be between -180 and 180. Try again...")
-        except ValueError:
-            print("That was not a valid number.  Try again...")
 
     print_bar("Biggest bar", get_biggest_bar(bars_lst))
     print_bar("Smallest bar", get_smallest_bar(bars_lst))

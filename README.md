@@ -23,8 +23,6 @@
 
 $ python bars.py <filepath>
 # possibly requires call of python3 executive instead of just python
-Input latitude: 55.880913782721215
-Input longitude: 37.449701840999658
 
 
 Biggest bar
@@ -95,9 +93,11 @@ Smallest bar
     },
     "type": "Feature"
 }
+Input latitude: 55.880913782721215
+Input longitude: 37.449701840999658
 
 
-Smallest bar
+Closest bar
 {
     "geometry": {
         "coordinates": [
