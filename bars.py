@@ -12,15 +12,6 @@ def load_bars(filepath):
     except FileNotFoundError:
         return 'no such file', None
 
-def check_load_bars(error, bars_dict):
-    if bars_dict is None:
-        exit('Error: {}'.format(error))
-    else:
-        try:
-            bars_lst = get_bars_lst(bars_dict)
-        except KeyError:
-            exit('That doesn\'t seem like correct bars.json')
-
 
 def get_bars_lst(bars_dict):
     bars_lst = bars_dict['features']
@@ -102,8 +93,6 @@ def print_all_bars(bars_lst, current_latitude, current_longitude):
               get_closest_bar(bars_lst, current_latitude, current_longitude))
 
 
-
-
 if __name__ == '__main__':
     if len(sys.argv) <= 1:
         exit('Please add a path to bars list')
@@ -116,11 +105,13 @@ if __name__ == '__main__':
             bars_lst = get_bars_lst(bars_dict)
         except KeyError:
             exit('That doesn\'t seem like correct bars.json')
+
     error, current_latitude = get_current_latitude()
+    error, current_longitude = get_current_longitude()
 
     if current_latitude is None:
         exit('Error: {}'.format(error))
-    error, current_longitude = get_current_longitude()
+
     if current_longitude is None:
         exit('Error: {}'.format(error))
 
