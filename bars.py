@@ -100,11 +100,10 @@ if __name__ == '__main__':
 
     if bars_dict is None:
         exit('Error: {}'.format(error))
-    else:
-        try:
-            bars_lst = get_bars_lst(bars_dict)
-        except KeyError:
-            exit('That doesn\'t seem like correct bars.json')
+    try:
+        bars_lst = get_bars_lst(bars_dict)
+    except KeyError:
+        exit('That doesn\'t seem like correct bars.json')
 
     error, current_latitude = get_current_latitude()
     error, current_longitude = get_current_longitude()
