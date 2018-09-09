@@ -36,11 +36,11 @@ def get_current_latitude():
     try:
         current_latitude = float(input('Input latitude: '))
         if -90 < current_latitude < 90:
-            return current_latitude
+            return None, current_latitude
         else:
-            exit('Latitude should be between -90 and 90. Try again...')
+            return 'latitude is not between -90 and 90', None
     except ValueError:
-        exit('That was not a valid number.  Try again...')
+        return 'latitude should be a number', None
 
 
 def get_current_longitude():
@@ -49,9 +49,9 @@ def get_current_longitude():
         if -180 < current_longitude < 180:
             return current_longitude
         else:
-            print('Longitude should be between -180 and 180. Try again...')
+            return 'longitude is not between -180 and 180', None
     except ValueError:
-        print('That was not a valid number.  Try again...')
+        return 'longitude should be a number', None
 
 
 def get_square_distance(current_longitude, current_latitude, bar):
@@ -93,17 +93,20 @@ if __name__ == '__main__':
     error, bars_dict = load_bars(sys.argv[1])
 
     if bars_dict is None:
-        print('Error: ' + error)
-        exit()
+        exit('Error: {}'.format(error))
     else:
         try:
             bars_lst = get_bars_lst(bars_dict)
         except KeyError:
-            print('That doesn\'t seem like correct bars.json')
-            exit()
+            exit('That doesn\'t seem like correct bars.json')
 
-    current_latitude = get_current_latitude()
-    current_longitude = get_current_longitude()
+    error, current_latitude = get_current_latitude()
+    if current_latitude is None:
+        exit('Error: {}'.format(error))
+
+    error, current_longitude = get_current_longitude()
+    if current_longitude is None:
+        exit('Error: {}'.format(error))
 
     print_bar('Biggest bar', get_biggest_bar(bars_lst))
     print_bar('Smallest bar', get_smallest_bar(bars_lst))
