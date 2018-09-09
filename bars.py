@@ -108,7 +108,6 @@ if __name__ == '__main__':
     if len(sys.argv) <= 1:
         exit('Please add a path to bars list')
     error, bars_dict = load_bars(sys.argv[1])
-<<<<<<< HEAD
 
     if bars_dict is None:
         exit('Error: {}'.format(error))
@@ -117,10 +116,6 @@ if __name__ == '__main__':
             bars_lst = get_bars_lst(bars_dict)
         except KeyError:
             exit('That doesn\'t seem like correct bars.json')
-=======
-    check_load_bars(error, bars_dict)
-
->>>>>>> 72757827ad4754e5bdff62e9671af56db7afcc0c
     error, current_latitude = get_current_latitude()
 
     if current_latitude is None:
