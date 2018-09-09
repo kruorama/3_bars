@@ -32,54 +32,54 @@ def get_smallest_bar(bars_lst):
     return min_bar
 
 
-def get_lat_current():
-    while True:
-        try:
-            lat_current = float(input('Input latitude: '))
-            if -90 < lat_current < 90:
-                break
-            else:
-                print("Latitude should be between -90 and 90. Try again...")
-        except ValueError:
-            print("That was not a valid number.  Try again...")
-    return lat_current
+def get_current_latitude():
+    try:
+        current_latitude = float(input('Input latitude: '))
+        if -90 < current_latitude < 90:
+            return current_latitude
+        else:
+            exit('Latitude should be between -90 and 90. Try again...')
+    except ValueError:
+        exit('That was not a valid number.  Try again...')
 
 
-def get_lon_current():
-    while True:
-        try:
-            lon_current = float(input('Input longitude: '))
-            if -180 < lon_current < 180:
-                break
-            else:
-                print("Longitude should be between -180 and 180. Try again...")
-        except ValueError:
-            print("That was not a valid number.  Try again...")
-
-    return lon_current
+def get_current_longitude():
+    try:
+        current_longitude = float(input('Input longitude: '))
+        if -180 < current_longitude < 180:
+            return current_longitude
+        else:
+            print('Longitude should be between -180 and 180. Try again...')
+    except ValueError:
+        print('That was not a valid number.  Try again...')
 
 
-def get_square_distance(lon_current, lat_current, bar):
+def get_square_distance(current_longitude, current_latitude, bar):
     lon_bar = bar['geometry']['coordinates'][0]
     lat_bar = bar['geometry']['coordinates'][1]
-    square_dist = (lat_bar - lat_current) ** 2 + (lon_bar - lon_current) ** 2
+    square_dist = (lat_bar - current_latitude) ** 2 + (lon_bar - current_longitude) ** 2
     return square_dist
 
 
-def get_closest_bar(bars_lst):
-    lat_current = get_lat_current()
-    lon_current = get_lon_current()
+def get_closest_bar(bars_lst, current_latitude, current_longitude):
     closest_bar = min(
         bars_lst,
-        key=lambda x: get_square_distance(lon_current, lat_current, x))
+        key=lambda x: get_square_distance(current_longitude, current_latitude, x))
     return closest_bar
 
 
 def print_bar(label, bar):
-    print('')
+    bar_name = bar['properties']['Attributes']['Name']
+    bar_district = bar['properties']['Attributes']['District']
+    bar_address = bar['properties']['Attributes']['Address']
+    bar_seats_count = bar['properties']['Attributes']['SeatsCount']
+
     print('')
     print(label)
-    print(json.dumps(bar, indent=4, ensure_ascii=False))
+    print(bar_name)
+    print('District: {}'.format(bar_district))
+    print('Address: {}'.format(bar_address))
+    print('Seats: {}'.format(bar_seats_count))
 
 
 if __name__ == '__main__':
@@ -95,9 +95,13 @@ if __name__ == '__main__':
         try:
             bars_lst = get_bars_lst(bars_dict)
         except KeyError:
-            print("That doesn't seem like correct bars.json")
+            print('That doesn\'t seem like correct bars.json')
             exit()
 
-    print_bar("Biggest bar", get_biggest_bar(bars_lst))
-    print_bar("Smallest bar", get_smallest_bar(bars_lst))
-    print_bar("Closest bar", get_closest_bar(bars_lst))
+    current_latitude = get_current_latitude()
+    current_longitude = get_current_longitude()
+
+    print_bar('Biggest bar', get_biggest_bar(bars_lst))
+    print_bar('Smallest bar', get_smallest_bar(bars_lst))
+    print_bar('Closest_bar',
+              get_closest_bar(bars_lst, current_latitude, current_longitude))
