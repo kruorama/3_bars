@@ -47,7 +47,7 @@ def get_current_longitude():
     try:
         current_longitude = float(input('Input longitude: '))
         if -180 < current_longitude < 180:
-            return current_longitude
+            return None, current_longitude
         else:
             return 'longitude is not between -180 and 180', None
     except ValueError:
@@ -86,6 +86,13 @@ def print_bar(label, bar):
     print('Seats: {}'.format(bar_seats_count))
 
 
+def print_all_bars(bars_lst, current_latitude, current_longitude):
+    print_bar('Biggest bar', get_biggest_bar(bars_lst))
+    print_bar('Smallest bar', get_smallest_bar(bars_lst))
+    print_bar('Closest_bar',
+              get_closest_bar(bars_lst, current_latitude, current_longitude))
+
+
 if __name__ == '__main__':
     if len(sys.argv) <= 1:
         exit('Please add a path to bars list')
@@ -108,7 +115,4 @@ if __name__ == '__main__':
     if current_longitude is None:
         exit('Error: {}'.format(error))
 
-    print_bar('Biggest bar', get_biggest_bar(bars_lst))
-    print_bar('Smallest bar', get_smallest_bar(bars_lst))
-    print_bar('Closest_bar',
-              get_closest_bar(bars_lst, current_latitude, current_longitude))
+    print_all_bars(bars_lst, current_latitude, current_longitude)
