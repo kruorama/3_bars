@@ -57,14 +57,18 @@ def get_current_longitude():
 def get_square_distance(current_longitude, current_latitude, bar):
     lon_bar = bar['geometry']['coordinates'][0]
     lat_bar = bar['geometry']['coordinates'][1]
-    square_dist = (lat_bar - current_latitude) ** 2 + (lon_bar - current_longitude) ** 2
+    square_dist = ((lat_bar - current_latitude) ** 2
+                   + (lon_bar - current_longitude) ** 2)
     return square_dist
 
 
 def get_closest_bar(bars_lst, current_latitude, current_longitude):
     closest_bar = min(
         bars_lst,
-        key=lambda x: get_square_distance(current_longitude, current_latitude, x))
+        key=lambda x: get_square_distance(
+            current_longitude,
+            current_latitude,
+            x))
     return closest_bar
 
 
