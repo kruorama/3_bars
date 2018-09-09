@@ -105,13 +105,13 @@ if __name__ == '__main__':
     except KeyError:
         exit('That doesn\'t seem like correct bars.json')
 
-    error, current_latitude = get_current_latitude()
-    error, current_longitude = get_current_longitude()
+    error_latitude, current_latitude = get_current_latitude()
+    error_longitude, current_longitude = get_current_longitude()
 
     if current_latitude is None:
-        exit('Error: {}'.format(error))
+        exit('Error: {}'.format(error_latitude))
 
     if current_longitude is None:
-        exit('Error: {}'.format(error))
+        exit('Error: {}'.format(error_longitude))
 
     print_all_bars(bars_lst, current_latitude, current_longitude)
