@@ -63,6 +63,12 @@ def get_square_distance(current_longitude, current_latitude, bar):
 
 
 def get_closest_bar(bars_lst, current_latitude, current_longitude):
+    if (current_latitude > 90) or (current_latitude < -90):
+        raise ValueError('Latitude is not between -90 and 90.')
+
+    if (current_longitude > 180) or (current_longitude < -180):
+        raise ValueError('Longitude is not between -180 and 180')
+
     closest_bar = min(
         bars_lst,
         key=lambda x: get_square_distance(
@@ -86,13 +92,6 @@ def print_bar(label, bar):
     print('Seats: {}'.format(bar_seats_count))
 
 
-def print_all_bars(bars_lst, current_latitude, current_longitude):
-    print_bar('Biggest bar', get_biggest_bar(bars_lst))
-    print_bar('Smallest bar', get_smallest_bar(bars_lst))
-    print_bar('Closest_bar',
-              get_closest_bar(bars_lst, current_latitude, current_longitude))
-
-
 if __name__ == '__main__':
     args = get_parser_args()
 
@@ -103,16 +102,13 @@ if __name__ == '__main__':
 
     try:
         bars_lst = get_bars_lst(bars_dict)
+        print_bar('Biggest bar', get_biggest_bar(bars_lst))
+        print_bar('Smallest bar', get_smallest_bar(bars_lst))
+        print_bar('Closest_bar',
+                  get_closest_bar(bars_lst,
+                                  args.current_latitude,
+                                  args.current_longitude))
     except KeyError:
         exit('That doesn\'t seem like correct bars.json')
-
-    current_latitude = args.current_latitude
-    current_longitude = args.current_longitude
-
-    if (current_latitude > 90) or (current_latitude < -90):
-        exit('Error: latitude is not between -90 and 90')
-
-    if (current_longitude > 180) or (current_longitude < -180):
-        exit('Error: longitude is not between -180 and 180')
-
-    print_all_bars(bars_lst, current_latitude, current_longitude)
+    except ValueError as error:
+        exit('Error: {}'.format(error))
