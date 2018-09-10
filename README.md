@@ -1,8 +1,6 @@
 # Bars
 
----
 The script reads the json file with bars and calculates biggest, smallest and closest bar
----
 
 ### Description
 
