@@ -1,5 +1,27 @@
 import json
-import sys
+import argparse
+
+
+def get_parser_args():
+    parser = argparse.ArgumentParser(
+        description="Input file and current coordinates")
+
+    parser.add_argument(
+        "filepath",
+        help="Path to JSON file with bars")
+
+    parser.add_argument(
+        "current_latitude",
+        help="Your current latitude",
+        type=float)
+
+    parser.add_argument(
+        "current_longitude",
+        help="Your current latitude",
+        type=float)
+
+    args = parser.parse_args()
+    return args
 
 
 def load_bars(filepath):
@@ -30,28 +52,6 @@ def get_smallest_bar(bars_lst):
         bars_lst,
         key=lambda x: x['properties']['Attributes']['SeatsCount'])
     return min_bar
-
-
-def get_current_latitude():
-    try:
-        current_latitude = float(input('Input latitude: '))
-        if -90 < current_latitude < 90:
-            return None, current_latitude
-        else:
-            return 'latitude is not between -90 and 90', None
-    except ValueError:
-        return 'latitude should be a number', None
-
-
-def get_current_longitude():
-    try:
-        current_longitude = float(input('Input longitude: '))
-        if -180 < current_longitude < 180:
-            return None, current_longitude
-        else:
-            return 'longitude is not between -180 and 180', None
-    except ValueError:
-        return 'longitude should be a number', None
 
 
 def get_square_distance(current_longitude, current_latitude, bar):
@@ -94,24 +94,25 @@ def print_all_bars(bars_lst, current_latitude, current_longitude):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) <= 1:
-        exit('Please add a path to bars list')
-    error, bars_dict = load_bars(sys.argv[1])
+    args = get_parser_args()
+
+    error, bars_dict = load_bars(args.filepath)
 
     if bars_dict is None:
         exit('Error: {}'.format(error))
+
     try:
         bars_lst = get_bars_lst(bars_dict)
     except KeyError:
         exit('That doesn\'t seem like correct bars.json')
 
-    error_latitude, current_latitude = get_current_latitude()
-    error_longitude, current_longitude = get_current_longitude()
+    current_latitude = args.current_latitude
+    current_longitude = args.current_longitude
 
-    if current_latitude is None:
-        exit('Error: {}'.format(error_latitude))
+    if (current_latitude > 90) or (current_latitude < -90):
+        exit('Error: latitude is not between -90 and 90')
 
-    if current_longitude is None:
-        exit('Error: {}'.format(error_longitude))
+    if (current_longitude > 180) or (current_longitude < -180):
+        exit('Error: longitude is not between -180 and 180')
 
     print_all_bars(bars_lst, current_latitude, current_longitude)
