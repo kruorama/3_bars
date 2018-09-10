@@ -1,26 +1,34 @@
-# Ближайшие бары
+# Bars
 
-Скрипт читает файл bars.json, вычисляет самый большой и самый маленький бар по количеству мест, и ближайший бар к введенным пользователем координатам по прямой без учета кривизны Земли. Вычисляется квадрат дистанции, чтобы не импортировать модуль math.
+---
+The script reads the json file with bars and calculates biggest, smallest and closest bar
+---
 
-Скрипт принимает три аргумента: путь к файлу со списком баров, широта и долгота. Широта должна быть между -90 и 90, долгота - между -180 и 180.
+### Description
 
-Схема файла не проверяется, только доступность ['features'] в bars_dict
+* Script takes a path to a file, latitude and longitude as parameters
+* Shows errors if:
+  * File is not found
+  * File can't be read as JSON
+  * Latitude is not between -90 and 90
+  * Longitude is not between -180 and 180
+* Doesn't check JSON's schema, will only work with a right JSON
+* Calculates and prints the smallest and the biggest bars in file by seats count
+* Calculates the closest bar to given coordinates (straight line, compares square distance to avoid importing `math`)
 
 
-# Где взять файл
+### Where to get bars.json
 
-На сайте data.mos.ru есть список московских баров. Его можно скачать в формате JSON. Для этого нужно:
+To download a list of all bars in Moscow from data.mos.ru in JSON format:
+* Register on data.mos.ru and get an API key
+* Download the file from a link like this https://apidata.mos.ru/v1/features/1796?api_key={place_your_API_key_here}.
 
-- зарегистрироваться на сайте и получить ключ API;
-- скачать файл по ссылке вида https://apidata.mos.ru/v1/features/1796?api_key={place_your_API_key_here}.
-А можно не тратить на это время и воспользоваться ранее скачанным файлом: https://devman.org/fshare/1503831681/4/
+Otherwise you can use a previously downloaded file: https://devman.org/fshare/1503831681/4/
 
 
-# Как запустить
+### How to launch
 
-Скрипт требует для своей работы установленного интерпретатора Python версии 3.5
-
-Запуск на Linux:
+Example of script launch on Linux, Python 3.5:
 
 ```bash
 
@@ -47,8 +55,6 @@ Seats: 50
 
 ```
 
-Запуск на Windows происходит аналогично.
+### Project goals
 
-# Цели проекта
-
-Код создан в учебных целях. В рамках учебного курса по веб-разработке - [DEVMAN.org](https://devman.org)
+The code is written for educational purposes. Training course for web-developers - [DEVMAN.org](https://devman.org)
