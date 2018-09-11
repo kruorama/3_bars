@@ -105,10 +105,10 @@ def print_bar(label, bar):
 def print_all_bars(bars_lst, current_latitude, current_longitude):
     print_bar('Biggest bar', get_biggest_bar(bars_lst))
     print_bar('Smallest bar', get_smallest_bar(bars_lst))
-    print_bar('Closest_bar',
-              get_closest_bar(bars_lst,
-                              current_latitude,
-                              current_longitude))
+    print_bar('Closest_bar', get_closest_bar(bars_lst,
+                                             current_latitude,
+                                             current_longitude))
+
 
 if __name__ == '__main__':
     args = get_parser_args()
@@ -126,9 +126,9 @@ if __name__ == '__main__':
     current_latitude = args.current_latitude
     current_longitude = args.current_longitude
 
-    coordinates_check, error = check_coordinates(current_latitude,
-                                                    current_longitude)
+    coordinates_check, coordinates_error = check_coordinates(current_latitude,
+                                                             current_longitude)
     if coordinates_check:
         print_all_bars(bars_lst, current_latitude, current_longitude)
     else:
-        exit('Error: {}'.format(error))
+        exit('Error: {}'.format(coordinates_error))
