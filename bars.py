@@ -11,14 +11,18 @@ def get_parser_args():
         help='Path to JSON file with bars')
 
     parser.add_argument(
-        'current_latitude',
+        '-lat',
+        '--current_latitude',
         help='Your current latitude',
-        type=float)
+        type=float,
+        required=True)
 
     parser.add_argument(
-        'current_longitude',
+        '-lon',
+        '--current_longitude',
         help='Your current latitude',
-        type=float)
+        type=float,
+        required=True)
 
     args = parser.parse_args()
     return args
@@ -106,8 +110,8 @@ if __name__ == '__main__':
         print_bar('Smallest bar', get_smallest_bar(bars_lst))
         print_bar('Closest_bar',
                   get_closest_bar(bars_lst,
-                                  args.lat,
-                                  args.lon))
+                                  args.current_latitude,
+                                  args.current_longitude))
     except KeyError:
         exit("That doesn't seem like correct bars.json")
     except ValueError as error:

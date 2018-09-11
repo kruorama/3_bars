@@ -30,7 +30,7 @@ Example of script launch on Linux, Python 3.5:
 
 ```bash
 
-$ python bars.py <filepath> <current_latitude> <current_longitude>
+$ python bars.py <filepath> -lat <current_latitude> -lon <current_longitude>
 # possibly requires call of python3 executive instead of just python
 
 Biggest bar
