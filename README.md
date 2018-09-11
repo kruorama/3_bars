@@ -10,7 +10,7 @@ The script reads the json file with bars and calculates biggest, smallest and cl
   * File can't be read as JSON
   * Latitude is not between -90 and 90
   * Longitude is not between -180 and 180
-* Doesn't check JSON's schema, will only work with a right JSON
+* Doesn't check JSON's schema, will only return an error if doesn't find `[features]`
 * Calculates and prints the smallest and the biggest bars in file by seats count
 * Calculates the closest bar to given coordinates (straight line, compares square distance to avoid importing `math`)
 
